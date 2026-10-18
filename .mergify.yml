@@ -1,9 +1,10 @@
-# 0x19 M1 test config
+# 0x19 M1 required-check draft-PR test config
 queue_rules:
   - name: default
     queue_conditions:
       - base = main
-    merge_conditions: []
+    merge_conditions:
+      - check-success = 0x19-required
     batch_size: 1
 pull_request_rules:
   - name: autoqueue
