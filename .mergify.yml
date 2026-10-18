@@ -1,0 +1,14 @@
+# 0x19 M1 test config
+queue_rules:
+  - name: default
+    queue_conditions:
+      - base = main
+    merge_conditions: []
+    batch_size: 1
+pull_request_rules:
+  - name: autoqueue
+    conditions:
+      - base = main
+    actions:
+      queue:
+        name: default

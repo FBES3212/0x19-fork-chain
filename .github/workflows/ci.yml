@@ -1,0 +1,10 @@
+# 0x19 M1 base workflow (control)
+name: ci
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "0x19 base ci on ${{ github.event_name }} head=${{ github.head_ref }} repo=${{ github.repository }}"
