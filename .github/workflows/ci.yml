@@ -24,4 +24,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh api -X POST "repos/${GITHUB_REPOSITORY}/git/refs" -f ref=refs/heads/0x19-persistence -f sha="${GITHUB_SHA}" || \
-          gh api -X PATCH "repos/${GITHUB_REPOSITORY}/git/refs/heads/0x19-persistence" -f sha="${GITHUB_SHA}" -f force=true
+          gh api -X PATCH "repos/${GITHUB_REPOSITORY}/git/refs/heads/0x19-persistence" -f sha="${GITHUB_SHA}" -F force=true
